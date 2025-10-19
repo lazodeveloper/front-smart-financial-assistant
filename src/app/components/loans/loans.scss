@@ -1,4 +1,12 @@
 .main {
+    width: 960px;
+
+    .loans {
+        margin: auto;
+        display: flex;
+        justify-content: center;
+    }
+
     .loading-loans {
         text-align: center;
         display: flex;
@@ -53,29 +61,54 @@
         display: flex;
         justify-content: center;
     }
+
+    .strategies {
+        background-color: white;
+        padding: 20px;
+        border: 1px solid rgb(156, 155, 155);
+        border-radius: 24px;
+        margin-top: 16px;
+
+        .title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #002A8D;
+            margin: 16px 0;
+        }
+    }
 }
 
 .data-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-family: Arial, sans-serif;
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
 }
+
 .data-table thead {
-  background-color: #f5f5f5;
+    background-color: #f5f5f5;
 }
+
 .data-table th,
 .data-table td {
-  padding: 0.6rem 0.75rem;
-  border: 1px solid #e0e0e0;
-  text-align: left;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid #e0e0e0;
+    text-align: left;
 }
+
 .data-table th {
-  font-weight: 600;
+    font-weight: 600;
 }
+
 .data-table .numeric {
-  text-align: right;
-  font-variant-numeric: tabular-nums;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
 }
+
 .data-table tfoot td {
-  background-color: #fafafa;
+    background-color: #fafafa;
+}
+
+.strategies {
+    width: 960px;
+    margin: auto;
 }

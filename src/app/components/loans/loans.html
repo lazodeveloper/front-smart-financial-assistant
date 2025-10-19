@@ -6,10 +6,11 @@
 
     </div>
     }
+
     @if(isLoadingLoans === false) {
 
-    <div>
-
+    <div class="">
+        <div (click)="toHome()"  class="return">Regresar</div>
         <h3> {{ customerData.fullName }}</h3>
         <div class="loans">
             <mat-card class="card-loas" appearance="outlined">
@@ -81,7 +82,7 @@
             <div class="minim-strategy">
                 <div class="title">1. Escenario Base: Pago Mínimo (El Costo Real)</div>
                 <table class="data-table" role="table" aria-label="Tabla de ejemplo de deudas">
-                    <caption>Listado de deudas</caption>
+                    
                     <thead>
                         <tr>
                             <th scope="col">Deuda</th>
@@ -123,7 +124,7 @@
                 <div class="title">2. Plan Optimizado</div>
 
                 <table class="data-table" role="table" aria-label="Tabla de ejemplo de deudas">
-                    <caption>Listado de deudas</caption>
+                
                     <thead>
                         <tr>
                             <th scope="col">Orden</th>
@@ -173,7 +174,7 @@
                 <div class="title">3. Consolidación de Deudas</div>
 
                 <table class="data-table" role="table" aria-label="Tabla de ejemplo de deudas">
-                    <caption>Listado de deudas</caption>
+                   
                     <thead>
                         <tr>
                             <th scope="col">Métrica</th>

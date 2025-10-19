@@ -105,4 +105,7 @@ export class Loans implements OnInit {
     });
   }
 
+  toHome(){
+    this.router.navigate(['/']);
+  }
 }
