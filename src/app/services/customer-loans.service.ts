@@ -8,8 +8,9 @@ import { FinancialStrategyModel } from '../models/financial-strategy.model';
   providedIn: 'root'
 })
 export class CustomerLoansService {
-  private apiUrlCustomer = "https://api-smart-financial-assistant.azurewebsites.net/financial-strategy/customers/1";
-  private apiUrlStrategy = 'http://localhost:8080/financial-strategy/strategies'; 
+  private apiUrlCustomer = "https://api-smart-financial-assistant.azurewebsites.net/financial-strategy/customers";
+  private apiUrlStrategy = 'https://api-smart-financial-assistant.azurewebsites.net/financial-strategy/strategies'; 
+  //private apiUrlStrategy = 'http://localhost:8080/financial-strategy/strategies'; 
   //private apiUrlCustomer = 'http://localhost:8080/financial-strategy/customers';
 
   constructor(private http: HttpClient) {}
