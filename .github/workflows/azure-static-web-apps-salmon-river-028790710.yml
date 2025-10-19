@@ -1,27 +1,18 @@
-name: Azure Static Web Apps CI/CD
+name: Deploy Angular to Azure Static Web App
 
 on:
   push:
     branches:
       - developer
-  pull_request:
-    types: [opened, synchronize, reopened, closed]
-    branches:
-      - developer
 
 jobs:
   build_and_deploy_job:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
-    name: Build and Deploy Job
+    name: Build and Deploy Angular App
 
     steps:
-      - uses: actions/checkout@v3
-        with:
-          submodules: true
-          lfs: false
+      - uses: actions/checkout@v4
 
-      # 👇 Fuerza el uso de Node 20 para Angular 20+
       - name: Set up Node.js 20
         uses: actions/setup-node@v4
         with:
@@ -30,30 +21,15 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build Angular app
+      - name: Build Angular app (production)
         run: npm run build -- --configuration production
 
-      - name: Build And Deploy
-        id: builddeploy
+      - name: Deploy to Azure Static Web App
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_SALMON_RIVER_028790710 }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
-          ###### Repository/Build Configurations ######
-          app_location: "/"
-          api_location: ""
-          output_location: "dist/front-smart-financial-assistant/browser"
-          ###### End of Repository/Build Configurations ######
-
-  close_pull_request_job:
-    if: github.event_name == 'pull_request' && github.event.action == 'closed'
-    runs-on: ubuntu-latest
-    name: Close Pull Request Job
-    steps:
-      - name: Close Pull Request
-        id: closepullrequest
-        uses: Azure/static-web-apps-deploy@v1
-        with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_SALMON_RIVER_028790710 }}
-          action: "close"
+          ###### ✅ Solo subimos el build ya generado ######
+          app_location: "dist/front-smart-financial-assistant/browser"
+          ###### ######
