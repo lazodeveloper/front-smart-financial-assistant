@@ -1,0 +1,229 @@
+<div class="main">
+    @if(isLoadingLoans === true) {
+    <div class="loading-loans">
+
+        <mat-spinner></mat-spinner>
+
+    </div>
+    }
+    @if(isLoadingLoans === false) {
+
+    <div>
+
+        <h3> {{ customerData.fullName }}</h3>
+        <div class="loans">
+            <mat-card class="card-loas" appearance="outlined">
+                <mat-card-header class="card-head">
+                    <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="money_bag"></mat-icon>
+                    <div class="title">Créditos</div>
+                </mat-card-header>
+
+                <mat-card-content>
+                    @for(loans of customerData.loans; track $index) {
+                    <div class="loans-detail">
+                        <div>
+                            <div class="loan-title">Crédito {{ loans.productType }} </div>
+                            <div class="loan-sub">{{ loans.principal | currency:'PEN':'symbol':'1.2-2' }}</div>
+                        </div>
+                        <div>
+                            <div class="loan-title">28/10/2025</div>
+                            <div class="loan-sub">Último día de pago</div>
+                        </div>
+
+                    </div>
+                    }
+                </mat-card-content>
+
+            </mat-card>
+
+            <mat-card class="card-loas" appearance="outlined">
+                <mat-card-header class="card-head">
+                    <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="money_bag"></mat-icon>
+                    <div class="title">Tarjetas de Crédito</div>
+                </mat-card-header>
+
+                <mat-card-content>
+                    @for(cards of customerData.cards; track $index) {
+                    <div class="loans-detail">
+                        <div>
+                            <div class="loan-title">línea de crédito</div>
+                            <div class="loan-sub">Consumido: {{ cards.balance | currency:'PEN':'symbol':'1.2-2' }}</div>
+                        </div>
+                        <div>
+                            <div class="loan-title"></div>
+                            <div class="loan-sub"></div>
+                        </div>
+
+                    </div>
+                    }
+                </mat-card-content>
+
+            </mat-card>
+        </div>
+        @if(isLoadingStrategies === false){
+        <div class="bt-assitent">
+            <button class="m-16" (click)="toAssistLoans()" matButton="filled">Assite</button>
+        </div>
+        }
+        @if(isLoadingStrategies === true){
+        <div class="bt-assitent">
+            <button class="m-16" (click)="toAssistLoans()" matButton="filled" disabled>Assite</button>
+        </div>
+        }
+        @if(isLoadingStrategies === true){
+        <div class="spinner-stratgy">
+            <mat-spinner></mat-spinner>
+        </div>
+        }
+        @if(strategyData) {
+
+        <div class="strategies">
+            <div class="minim-strategy">
+                <div class="title">1. Escenario Base: Pago Mínimo (El Costo Real)</div>
+                <table class="data-table" role="table" aria-label="Tabla de ejemplo de deudas">
+                    <caption>Listado de deudas</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">Deuda</th>
+                            <th scope="col">Tipo</th>
+                            <th scope="col">Tasa Anual (%)</th>
+                            <th scope="col">Cuota Mensual</th>
+                            <th scope="col">Plazo Estimado Total (Meses)</th>
+                            <th scope="col">Intereses Totales Pagados</th>
+                            <th scope="col">Ahorro Estimado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for(loans of minimStrategy?.debtDetails ?? []; track $index) {
+                        <tr>
+                            <td>{{loans?.productId}} </td>
+                            <td>{{loans?.productType}} </td>
+                            <td>{{loans?.annualRatePct}} % </td>
+                            <td>{{loans?.minimumPayment}}</td>
+                            <td>{{loans?.finalTermMonths}}</td>
+                            <td>{{loans?.totalInterest}}</td>
+                            <td>{{loans?.interestSavingsOnDebt}}</td>
+                        </tr>
+                        }
+
+                        <!-- Añade más filas aquí -->
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3"><strong>Total</strong></td>
+                            <td><strong>{{minimStrategy?.totalMinPayment}} </strong></td>
+                            <td> <strong>{{minimStrategy?.totalTermMonths}} </strong> </td>
+                            <td><strong>{{minimStrategy?.totalInterestPaid}}</strong></td>
+                            <td><strong>0.00</strong></td>
+
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <div class="title">2. Plan Optimizado</div>
+
+                <table class="data-table" role="table" aria-label="Tabla de ejemplo de deudas">
+                    <caption>Listado de deudas</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">Orden</th>
+                            <th scope="col">Deuda</th>
+                            <th scope="col">Pago Mínimo/Cuota</th>
+                            <th scope="col">Pago Extra</th>
+                            <th scope="col">Pago Total Recomendado</th>
+                            <th scope="col">Ahorro Estimado en Intereses</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for(loans of optimizedStrategy?.debtDetails ?? []; track $index) {
+                        <tr>
+                            @if ($index === 0) {
+                            <td><strong>{{loans?.productId}} (PRIORIDAD)</strong> </td>
+                            <td><strong>{{loans?.productType}}</strong> ( {{loans?.annualRatePct}} % tasa)</td>
+                            <td>{{loans?.minimumPayment}} </td>
+                            <td>{{loans?.extraPaymentFromFCD}}</td>
+                            <td>{{loans?.totalRecommendedPayment}}</td>
+                            <td>{{loans?.interestSavingsOnDebt}}</td>
+                            } @else {
+                            <td>{{loans?.productId}} </td>
+                            <td><strong>{{loans?.productType}}</strong> ( {{loans?.annualRatePct}} % tasa)</td>
+                            <td>{{loans?.minimumPayment}} </td>
+                            <td>{{loans?.extraPaymentFromFCD}}</td>
+                            <td>{{loans?.totalRecommendedPayment}}</td>
+                            <td>{{loans?.interestSavingsOnDebt}}</td>
+                            }
+
+                        </tr>
+                        }
+
+                        <!-- Añade más filas aquí -->
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2"><strong>Total</strong></td>
+                            <td><strong>{{optimizedStrategy?.totalMinPayment}} </strong></td>
+                            <td> <strong>{{optimizedStrategy?.totalExtraPayment}} </strong> </td>
+                            <td><strong>{{optimizedStrategy?.totalRecommendedPayment}}</strong></td>
+                            <td><strong>{{optimizedStrategy?.totalEstimatedInterestSavings}}</strong></td>
+
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <div class="title">3. Consolidación de Deudas</div>
+
+                <table class="data-table" role="table" aria-label="Tabla de ejemplo de deudas">
+                    <caption>Listado de deudas</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">Métrica</th>
+                            <th scope="col">Pago Mínimo (Baseline)</th>
+                            <th scope="col">Consolidación (Oferta %)</th>
+                            <th scope="col">Diferencia / Ahorro</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr>
+                            <td><strong>Tasa Promedio</strong> </td>
+                            <td>{{minimStrategy?.totalAverageRate}} %</td>
+                            <td><strong>{{consolideStrategy?.totalAverageRate}} %</strong></td>
+                             <td>Reducción de {{consolideStrategy?.totalPointreduction}} puntos</td>
+                            
+                        </tr>
+                        <tr>
+                            <td><strong>Pago Mensual Requerido</strong></td>
+                            <td>{{minimStrategy?.totalMinPayment}} </td>
+                            <td><strong>{{consolideStrategy?.totalMinPayment}}</strong></td>
+                            <td>+{{consolideStrategy?.totalIncreaseQuota}} (Aumento de Cuota) </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Plazo Total de Pago</strong> </td>
+                            <td>{{minimStrategy?.totalTermMonths}} meses </td>
+                            <td><strong>{{consolideStrategy?.totalTermMonths}} meses</strong></td>
+                            <td>Ahorro de {{consolideStrategy?.termSavingsVsBaseline}} meses </td>
+               
+                        </tr>
+                        <tr>
+                            <td><strong>Intereses Totales Pagados</strong></td>
+                            <td>{{minimStrategy?.totalInterestPaid}}</td>
+                            <td><strong>{{consolideStrategy?.totalInterestPaid}}</strong></td>
+                            <td>Ahorro de {{consolideStrategy?.totalEstimatedInterestSavings}} </td>
+                        </tr>
+
+
+                        <!-- Añade más filas aquí -->
+                    </tbody>
+
+                </table>
+
+            </div>
+        </div>
+        }
+        <markdown class="variable-binding" [data]="strategyData?.recommendedStrategy"></markdown>
+    </div>
+    }
+
+
+
+</div>
