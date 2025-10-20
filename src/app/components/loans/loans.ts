@@ -106,7 +106,26 @@ export class Loans implements OnInit {
     });
   }
 
-  toHome(){
+  toHome() {
     this.router.navigate(['/']);
   }
+
+  comparePayMinim(
+    scenarioMinim: Scenario | null,
+    scenarioConsolidation: Scenario | null
+  ): string {
+    if (!scenarioMinim || !scenarioConsolidation) {
+      return ''; // 
+    }
+
+    const totalPayMini = Number(scenarioMinim.totalMinPayment);
+    const totalPaycons = Number(scenarioConsolidation.totalMinPayment);
+
+    if (totalPayMini > totalPaycons) {
+      return `- S/ ${scenarioConsolidation.totalIncreaseQuota} (Disminución de cuota)`;
+    } else {
+      return `+ S/ ${scenarioConsolidation.totalIncreaseQuota} (Aumento de cuota)`;
+    }
+  }
+
 }

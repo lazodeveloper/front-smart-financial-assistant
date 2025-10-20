@@ -10,7 +10,9 @@
     @if(isLoadingLoans === false) {
 
     <div class="">
-        <div (click)="toHome()"  class="return">Regresar</div>
+        <div (click)="toHome()"  class="return">
+            <mat-icon aria-hidden="false" class="icon" fontIcon="arrow_back"></mat-icon>
+              Atras </div>
         <h3> {{ customerData.fullName }}</h3>
         <div class="loans">
             <mat-card class="card-loas" appearance="outlined">
@@ -196,7 +198,7 @@
                             <td><strong>Pago Mensual Requerido</strong></td>
                             <td>{{minimStrategy?.totalMinPayment | soles}} </td>
                             <td><strong>{{consolideStrategy?.totalMinPayment | soles}}</strong></td>
-                            <td>+ {{consolideStrategy?.totalIncreaseQuota | soles}} (Aumento de Cuota) </td>
+                            <td>{{comparePayMinim(minimStrategy, consolideStrategy)}} </td>
                         </tr>
                         <tr>
                             <td><strong>Plazo Total de Pago</strong> </td>

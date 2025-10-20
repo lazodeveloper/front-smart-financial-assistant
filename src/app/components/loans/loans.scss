@@ -1,6 +1,19 @@
 .main {
     width: 960px;
 
+    .return {
+        margin-bottom: 32px;
+        display: flex;
+        align-items: center;
+        color: #ff7800;
+        font-weight: 500;
+        cursor: pointer;
+
+        .icon {
+            margin-right: 16px;
+        }
+    }
+
     .loans {
         margin: auto;
         display: flex;
