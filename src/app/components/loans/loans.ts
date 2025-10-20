@@ -11,12 +11,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { FinancialStrategyModel, Scenario } from '../../models/financial-strategy.model';
 import { ChangeDetectorRef } from '@angular/core';
 import { MarkdownComponent } from 'ngx-markdown';
+import { SolesPipe } from '../../pipes/soles-pipe';
 
 @Component({
   selector: 'app-loans',
   standalone: true,
   imports: [MatIconModule, MatCardModule, MatTableModule, MatProgressSpinnerModule,
-    CommonModule, MatButtonModule, MarkdownComponent],
+    CommonModule, MatButtonModule, MarkdownComponent, SolesPipe],
   templateUrl: './loans.html',
   styleUrl: './loans.scss'
 })
