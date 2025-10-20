@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, NgZone, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CustomerLoansService } from '../../services/customer-loans.service';
 import { CustomerDataModel } from '../../models/customer.model';
@@ -12,6 +12,8 @@ import { FinancialStrategyModel, Scenario } from '../../models/financial-strateg
 import { ChangeDetectorRef } from '@angular/core';
 import { MarkdownComponent } from 'ngx-markdown';
 import { SolesPipe } from '../../pipes/soles-pipe';
+import { Observable } from 'rxjs/internal/Observable';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-loans',
@@ -30,12 +32,17 @@ export class Loans implements OnInit {
   consolideStrategy: Scenario | null = null;
   isLoadingLoans: boolean = true;
   isLoadingStrategies: boolean = false;
+  isCompleteAssitant: boolean = false;
+  assistantResponse?: string;
+  private subscription: Subscription | undefined;
+
 
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private customerLoansService: CustomerLoansService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private zone: NgZone
 
   ) { }
 
@@ -57,7 +64,7 @@ export class Loans implements OnInit {
         console.log(data);
         console.log(this.customerData.fullName);
         console.log(this.isLoadingLoans);
-        this.cdr.detectChanges();
+        this.cdr.markForCheck();
       },
       error: (err) => console.error('Error al obtener datos del cliente', err),
 
@@ -75,6 +82,7 @@ export class Loans implements OnInit {
       next: (data) => {
         this.isLoadingStrategies = false;
         this.strategyData = data;
+
 
         this.minimStrategy =
           data.scenarios.find(
@@ -98,13 +106,33 @@ export class Loans implements OnInit {
           ) || ({} as Scenario);
 
         console.log(data);
-        this.cdr.detectChanges();
-
+         this.getAssistant(JSON.stringify(data));
+        this.cdr.markForCheck();
+        //this.prompt = JSON.stringify(data);
+       
+       
       },
       error: (err) => console.error('Error al obtener datos del cliente', err),
 
     });
   }
+
+  getAssistant(promp: string) {
+
+    this.subscription = this.customerLoansService.getAssistant(promp).subscribe({
+      next: (res) => {
+        this.assistantResponse = res.data;
+        console.log(this.assistantResponse);
+        this.isCompleteAssitant = true;
+        console.log(this.isCompleteAssitant);
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error('Error al obtener datos del cliente', err),
+
+    });
+  }
+
+ 
 
   toHome() {
     this.router.navigate(['/']);
@@ -127,5 +155,9 @@ export class Loans implements OnInit {
       return `+ S/ ${scenarioConsolidation.totalIncreaseQuota} (Aumento de cuota)`;
     }
   }
-
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
 }

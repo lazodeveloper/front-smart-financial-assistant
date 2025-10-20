@@ -1,0 +1,3 @@
+interface AssistantModel {
+  data: string;
+}

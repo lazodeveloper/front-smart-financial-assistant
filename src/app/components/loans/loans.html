@@ -10,9 +10,10 @@
     @if(isLoadingLoans === false) {
 
     <div class="">
-        <div (click)="toHome()"  class="return">
+        <div (click)="toHome()" class="return">
             <mat-icon aria-hidden="false" class="icon" fontIcon="arrow_back"></mat-icon>
-              Atras </div>
+            Atras
+        </div>
         <h3> {{ customerData.fullName }}</h3>
         <div class="loans">
             <mat-card class="card-loas" appearance="outlined">
@@ -84,7 +85,7 @@
             <div class="minim-strategy">
                 <div class="title">1. Escenario Base: Pago Mínimo (El Costo Real)</div>
                 <table class="data-table" role="table" aria-label="Tabla de ejemplo de deudas">
-                    
+
                     <thead>
                         <tr>
                             <th scope="col">Deuda</th>
@@ -126,7 +127,7 @@
                 <div class="title">2. Plan Optimizado</div>
 
                 <table class="data-table" role="table" aria-label="Tabla de ejemplo de deudas">
-                
+
                     <thead>
                         <tr>
                             <th scope="col">Orden</th>
@@ -176,7 +177,7 @@
                 <div class="title">3. Consolidación de Deudas</div>
 
                 <table class="data-table" role="table" aria-label="Tabla de ejemplo de deudas">
-                   
+
                     <thead>
                         <tr>
                             <th scope="col">Métrica</th>
@@ -191,8 +192,8 @@
                             <td><strong>Tasa Promedio</strong> </td>
                             <td>{{minimStrategy?.totalAverageRate}} %</td>
                             <td><strong>{{consolideStrategy?.totalAverageRate}} %</strong></td>
-                             <td>Reducción de {{consolideStrategy?.totalPointreduction}} puntos</td>
-                            
+                            <td>Reducción de {{consolideStrategy?.totalPointreduction}} puntos</td>
+
                         </tr>
                         <tr>
                             <td><strong>Pago Mensual Requerido</strong></td>
@@ -205,7 +206,7 @@
                             <td>{{minimStrategy?.totalTermMonths}} meses </td>
                             <td><strong>{{consolideStrategy?.totalTermMonths}} meses</strong></td>
                             <td>Ahorro de {{consolideStrategy?.termSavingsVsBaseline}} meses </td>
-               
+
                         </tr>
                         <tr>
                             <td><strong>Intereses Totales Pagados</strong></td>
@@ -222,10 +223,18 @@
 
             </div>
         </div>
+        @if(isCompleteAssitant === false){
+        <div class="assistantResponse"> El asistente está analizando tu información financiera, esto puede tardar unos segundos... </div>
         }
-        <markdown class="variable-binding" [data]="strategyData?.recommendedStrategy"></markdown>
+        @if(isCompleteAssitant === true){
+        <markdown class="variable-binding" [data]="assistantResponse"></markdown>
+        }
+
+        }
+
     </div>
     }
+
 
 
 
